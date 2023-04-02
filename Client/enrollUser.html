@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/nav.css">
     <link rel="stylesheet" href="../static/enroll.css">
+    <script src="./socketLib.js"></script>
 
     <title>Document</title>
 </head>
@@ -14,17 +15,32 @@
         <nav>
             <div class="nav-items">
                 <ul>
-                    <li><a href="">Home</a></li>
-                    <li><a href="">Enroll</a></li>
-                    <li><a href="">Take attendance</a></li>
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./enrollUser.html">Enroll</a></li>
+                    <li><a href="./take_attendance.html">Take attendance</a></li>
                     <li><a href="">About</a></li>
                 </ul>
             </div>
         </nav> 
     </header>
     <div class="form-container">
+        <div class="form">
+           
+                <div class="preview-image">
+            
+                </div>
+                <input type="file" id="file-input">
+                <input type="input" placeholder="Firstname" id="fname">
+                <input type="input" placeholder="MiddleName" id="mname">
+                <input type="input" placeholder="Lastname" id="lname">
+                <input type="email" placeholder="Enter email" id="email">
+           <button class="btn" onclick="EnrollUsers()">Enroll member</button>
+            
+            </div>
 
-    </div>
-    
+
+        </div>
+       
+    <script src="../static/enroll.js"></script>
 </body>
 </html>
