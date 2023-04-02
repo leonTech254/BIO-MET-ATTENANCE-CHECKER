@@ -1,0 +1,28 @@
+*
+{
+    padding: 0;
+    margin: 0;
+}
+
+nav
+{
+    width: 100%;
+    background-color: black;
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 10px;
+}
+
+nav ul
+{
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+nav ul a
+{
+    padding: .5rem;
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+}

@@ -1,0 +1,9 @@
+header {
+    height: 100vh;
+    background: linear-gradient(to left, black, rgba(50, 45, 45, 0.76)), url("./images/homebg.jpg");
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+
+}
