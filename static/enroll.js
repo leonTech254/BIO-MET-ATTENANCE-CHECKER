@@ -17,52 +17,40 @@ fileInput.addEventListener('change', function(event) {
 });
 
 
- let message=document.getElementById("message")
+let message = document.getElementById("message")
+let button = document.getElementById("btn").addEventListener('click', (e) => {
+  EnrollUsers(e)
+   
+ })
 
-        var socket = io.connect("http://192.168.43.225:5000");
-        socket.on('connect', function () {
-            socket.emit('my event', { data: 'I\'m connected!' });
-        });
-        function EnrollUsers()
+     
+        function EnrollUsers(event)
         {
-         
-            let lname = document.getElementById("lname").value;
-            let fname = document.getElementById("fname").value;
-            let mname = document.getElementById("mname").value;
-            let email = document.getElementById("email").value;
-            let data_array = [lname, fname, mname, email]
-            let checker = true;
-            for (let i = 0; i < data_array.length; i++)
-            {
-                if (data_array[i] == "")
-                {
-                    checker = false;
-                    alert('all field required');
-                    break;
-                }
-                
-            }
-            if (checker)
-            {
-               const file = fileInput.files[0];
+           event.preventDefault();
+  let lname = document.getElementById("lname").value;
+  let fname = document.getElementById("fname").value;
+  let mname = document.getElementById("mname").value;
+  let email = document.getElementById("email").value;
+  let fileInput = document.getElementById("file-input");
   
-  const reader = new FileReader();
-  reader.addEventListener('load', (event) => {
-    const imageData = event.target.result;
-    
-    let data={'lname':lname,'fname':fname,'mname':mname,'email':email,"image": imageData}
-    socket.emit("from_flask",{"credentials":data})
-  });
-  
-  reader.readAsDataURL(file);
-          
-                
-           
-            }
+  let data = new FormData();
+  data.append('lname', lname);
+  data.append('fname', fname);
+  data.append('mname', mname);
+  data.append('email', email);
+  if (fileInput.files.length > 0) {
+    let file = fileInput.files[0];
+    data.append('image', file, file.name);
+  }
 
+  axios.post("http://127.0.0.1:5000/api/register", data)
+    .then((res) => {
+      console.log(res.data);
+      // alert(res.data);
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Error occurred");
+    });
         }
-         socket.on("name", (data) => {
-           alert(data.message)
-           
-
-            })
+        

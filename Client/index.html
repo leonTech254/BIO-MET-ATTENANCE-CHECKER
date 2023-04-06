@@ -15,7 +15,7 @@
     <ul>
         <li><a href="">Home</a></li>
         <li><a href="./enrollUser.html">Enroll</a></li>
-        <li><a href="">Take attendance</a></li>
+        <li><a href="./take_attendance.html">Take attendance</a></li>
         <li><a href="">About</a></li>
     </ul>
 </div>
@@ -57,12 +57,13 @@ of participants in your meetings, so you don't have to.
     <script type="text/javascript" charset="utf-8">
         let message=document.getElementById("message")
 
-        var socket = io.connect("http://192.168.43.225:5000");
+        var socket = io.connect("http://127.0.0.1:5000");
         socket.on('connect', function () {
             socket.emit('my event', { data: 'I\'m connected!' });
         });
         function HelloSocket()
         {
+            
           socket.emit("from_flask",{"ok":"i have understood"})
 
           

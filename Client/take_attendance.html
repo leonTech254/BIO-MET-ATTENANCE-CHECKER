@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../static/nav.css">
     <title>Document</title>
     <script src="./socketLib.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <header>
@@ -20,9 +21,14 @@
                 </ul>
             </div>
         </nav>
+
     </header>
-    <button onclick="fecth_attendance()">Fetch attendance</button>
-    <button onclick="Fetch_report()">Generate Attendance Report</button>
+    <div class="conteiner-btn">
+<button onclick="fecth_attendance()">Fetch attendance</button>
+<button onclick="Fetch_report()">Generate Attendance Report</button>
+
+    </div>
+   
    <script src="../static/attend.js"></script> 
 </body>
 </html>
