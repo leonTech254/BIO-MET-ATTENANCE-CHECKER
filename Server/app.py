@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from generate_id import Generate
 import numpy as np
-from face_rec import Recongonation
+from face_rec import Recongonation,EnrollFace
 
 from Models.db import db
 from Models.model import Users
@@ -26,15 +26,14 @@ face_cascade = cv.CascadeClassifier(
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 CORS(app, resorces={r'/*': {"orgins": '*'}})
-
+output_dir = 'Images'
+os.makedirs(output_dir, exist_ok=True)
 
 def train(Datalist):
     face_recognizer = cv.face.LBPHFaceRecognizer_create()
     try:
-        # Load the existing model if it exists
         face_recognizer.read('model.yml')
     except cv.error:
-        # If the model doesn't exist, create a new one
         pass
     image = cv.imread(Datalist[0])
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
@@ -50,45 +49,60 @@ def train(Datalist):
 
 @app.route('/api/register', methods=['POST', 'GET'])
 def register():
-    print("hello")
-    check_face = False
-    image_file = request.files['image']
-    names = request.form['fname'] + " " + \
-        request.form['mname'] + " " + request.form['lname']
-    email = request.form['email']
+    try:
+        check_face = False
+        image_file = request.files['image']
+        names = f"{request.form['fname']} {request.form['mname']} {request.form['lname']}"
+        email = request.form['email']
 
-    # read the image from file and do some processing
-    image_bytes = BytesIO(image_file.read())
-    image = cv.imdecode(np.frombuffer(
-        image_bytes.getbuffer(), np.uint8), cv.IMREAD_COLOR)
-    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(
-        gray, scaleFactor=1.1, minNeighbors=5)
-    for (x, y, w, h) in faces:
-        check_face = True
-        FaceID = Generate.ID()
-        image_save = f"./Images/{FaceID}.png"
-        cv.imwrite(image_save, image[y:y+h, x:x+w])
-        train_response = train([image_save, FaceID])
-        if train_response:
-            data = Users(names=names, email=email, userId=FaceID)
-            db.session.add(data)
-            db.session.commit()
-            print("hello")
-        print(train_response)
-
-    if check_face:
-        return 'success'
-    else:
-        pass
-
-    return "hello"
+        # Read the image from the file and perform processing
+        image_bytes = BytesIO(image_file.read())
+        image = cv.imdecode(np.frombuffer(image_bytes.getbuffer(), np.uint8), cv.IMREAD_COLOR)
+        
+        # Convert the image to grayscale
+        gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+        
+        # Detect faces using the cascade classifier
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
+        
+        for (x, y, w, h) in faces:
+            check_face = True
+            FaceID = Generate.ID()  # Assuming you have the Generate.ID() function
+            
+            image_save = f".//{FaceID}.png"
+            cv.imwrite(image_save, image[y:y+h, x:x+w])
+            train_response = train([image_save, FaceID])  # Assuming you have the train() function
+            if train_response:
+                data = Users(names=names, email=email, userId=FaceID)  # Assuming you have the Users model
+                db.session.add(data)  # Assuming you're using a database
+                db.session.commit()
+                print("User registered:", names)
+            else:
+                print("Training failed for user:", names)
+        
+        if check_face:
+            return 'success'
+        else:
+            return 'No face detected'
+    
+    except cv.error as cv_err:
+        return f"OpenCV Error: {str(cv_err)}"
+    
+    except Exception as e:
+        return f"Unexpected Error: {str(e)}"
 
 
 @app.route('/api/take_attendance')
 def attendance_take():
-    # print(data)
     name = Recongonation.Rec()
+    print(name)
+    return 'hello'
+
+@app.route("/api/enroll_faces/",methods=['POST', 'GET'])
+def FaceEnroll():
+    content=request.get_json();
+    person_name=content['fname']
+    name = EnrollFace.enroll(person_name)
     print(name)
     return 'hello'
 

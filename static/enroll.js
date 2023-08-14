@@ -53,4 +53,25 @@ let button = document.getElementById("btn").addEventListener('click', (e) => {
       alert("Error occurred");
     });
         }
-        
+
+
+function EnrollFace()
+{
+  let fname = document.getElementById("fname").value;
+  if (fname != '')
+  {
+    let data = { "fname": fname };
+  axios.post("http://127.0.0.1:5000/api/enroll_faces/", data)
+    .then((res) => {
+      console.log(res.data);
+      // alert(res.data);
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Error occurred");
+    });   
+  } else
+  {
+    alert("you need to student name required")
+    }
+}
