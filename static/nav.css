@@ -68,3 +68,10 @@ button:active
     color: orange;
 
 }
+
+.NewFaceEnroll
+{
+    height: 3rem;
+    background-color: green;
+    border: none;
+}
