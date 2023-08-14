@@ -8,6 +8,7 @@
     <title>Document</title>
     <script src="./socketLib.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -24,8 +25,15 @@
 
     </header>
     <div class="conteiner-btn">
-<button onclick="fecth_attendance()">Fetch attendance</button>
-<button onclick="Fetch_report()">Generate Attendance Report</button>
+        <div class="btnContainer">
+<button onclick="fecth_attendance()">Fetch attendance <span class="material-icons">
+    group
+</span></button>
+<button onclick="Fetch_report()">Generate Attendance Report <span class="material-icons">
+    picture_as_pdf
+</span></button>
+        </div>
+
 
     </div>
    
